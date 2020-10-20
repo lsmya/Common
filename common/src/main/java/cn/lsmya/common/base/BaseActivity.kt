@@ -9,8 +9,11 @@ import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.annotation.LayoutRes
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import cn.lsmya.common.R
 import cn.lsmya.common.empty.SysErrModel
@@ -20,6 +23,11 @@ import com.gyf.immersionbar.ktx.immersionBar
 import org.greenrobot.eventbus.Subscribe
 
 abstract class BaseActivity : AppCompatActivity() {
+
+    protected inline fun <reified T : ViewDataBinding> dataBinding(
+        @LayoutRes resId: Int
+    ): Lazy<T> = lazy { DataBindingUtil.setContentView<T>(this, resId) }
+
     private var loadingDialog: Dialog? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
