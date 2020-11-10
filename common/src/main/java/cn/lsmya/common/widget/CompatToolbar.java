@@ -3,6 +3,8 @@ package cn.lsmya.common.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.StringRes;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import cn.lsmya.common.R;
 
@@ -24,6 +27,7 @@ public class CompatToolbar extends RelativeLayout {
     private ImageView navigationIconView;
     private OnClickListener listener;
     private OnMenuClickListener menuClickListener;
+    private int navigationIconColor = -1;
 
     public CompatToolbar(Context context) {
         this(context, null);
@@ -57,6 +61,8 @@ public class CompatToolbar extends RelativeLayout {
                 if (0 != resourceId) {
                     toolbar.setNavigationIcon(resourceId);
                 }
+            } else if (attr == R.styleable.CompatToolbar_toolbar_navigationIconColor) {
+                navigationIconColor = typedArray.getColor(attr, Color.parseColor("#111111"));
             } else if (attr == R.styleable.CompatToolbar_toolbar_menu) {
                 int resourceId = typedArray.getResourceId(attr, 0);
                 if (resourceId != 0) {
@@ -78,34 +84,29 @@ public class CompatToolbar extends RelativeLayout {
             }
         }
         typedArray.recycle();
-        toolbar.setNavigationOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    listener.onClick(v);
-                }
+        Drawable navigationIcon = toolbar.getNavigationIcon();
+        if (navigationIconColor != -1 && navigationIcon != null) {
+            navigationIcon.setColorFilter(navigationIconColor, PorterDuff.Mode.SRC_ATOP);
+        }
+        toolbar.setNavigationOnClickListener(v -> {
+            if (listener != null) {
+                listener.onClick(v);
             }
         });
-        navigationIconView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    listener.onClick(v);
-                }
+        navigationIconView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onClick(v);
             }
         });
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                if (menuClickListener != null) {
-                    menuClickListener.onMenuClick(menuItem);
-                }
-                return true;
+        toolbar.setOnMenuItemClickListener(menuItem -> {
+            if (menuClickListener != null) {
+                menuClickListener.onMenuClick(menuItem);
             }
+            return true;
         });
     }
 
-    public void setNavigationOnClickListener(OnClickListener listener) {
+    public void setOnNavigationClickListener(OnClickListener listener) {
         this.listener = listener;
     }
 

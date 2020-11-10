@@ -5,7 +5,7 @@ publish {
     userOrg = 'lovelylsmya'
     groupId = 'android.library'
     artifactId = 'common'
-    publishVersion = '1.0.2'
+    publishVersion = '1.0.3'
     desc = 'Android development Kit'
     website = 'https://github.com/lsmya/Common'
 }

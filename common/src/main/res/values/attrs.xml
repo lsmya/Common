@@ -5,6 +5,7 @@
         <attr name="toolbar_navigationIcon" format="reference|color" />
         <attr name="toolbar_menu" format="reference" />
         <attr name="toolbar_titleColor" format="color" />
+        <attr name="toolbar_navigationIconColor" format="color" />
         <attr name="toolbar_hideNavigationIcon" format="boolean" />
         <attr name="toolbar_clickEffect" format="boolean" />
     </declare-styleable>
