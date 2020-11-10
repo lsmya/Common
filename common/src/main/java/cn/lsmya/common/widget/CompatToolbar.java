@@ -87,6 +87,7 @@ public class CompatToolbar extends RelativeLayout {
         Drawable navigationIcon = toolbar.getNavigationIcon();
         if (navigationIconColor != -1 && navigationIcon != null) {
             navigationIcon.setColorFilter(navigationIconColor, PorterDuff.Mode.SRC_ATOP);
+            toolbar.setNavigationIcon(navigationIcon);
         }
         toolbar.setNavigationOnClickListener(v -> {
             if (listener != null) {

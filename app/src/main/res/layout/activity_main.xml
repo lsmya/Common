@@ -9,7 +9,7 @@
     <cn.lsmya.common.widget.CompatToolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:toolbar_navigationIconColor="@color/colorPrimary"
+        app:toolbar_navigationIconColor="#ff0000"
         app:toolbar_title="测试" />
 
 </LinearLayout>
