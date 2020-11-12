@@ -10,6 +10,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 fun navigation(
     activity: Activity? = null,
     url: String,
+    flags: Int = -1,
     requestCode: Int = -1,
     block: (Postcard.() -> Unit)? = null
 ) {
@@ -17,6 +18,9 @@ fun navigation(
     postcard?.let {
         block?.let {
             postcard.apply(it)
+        }
+        if (flags != -1) {
+            it.withFlags(flags)
         }
         if (activity == null) {
             postcard.navigation()

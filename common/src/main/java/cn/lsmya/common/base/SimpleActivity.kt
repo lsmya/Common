@@ -15,11 +15,13 @@ import androidx.fragment.app.Fragment
 import cn.lsmya.common.R
 import cn.lsmya.common.empty.SysErrModel
 import cn.lsmya.common.extension.*
+import cn.lsmya.common.utils.navigation
 import com.alibaba.android.arouter.launcher.ARouter
 import com.gyf.immersionbar.ktx.immersionBar
 import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
-abstract class BaseActivity : AppCompatActivity() {
+abstract class SimpleActivity : AppCompatActivity() {
 
     private var loadingDialog: Dialog? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,22 +77,24 @@ abstract class BaseActivity : AppCompatActivity() {
      *
      * [isGlobleIntercepterEventbusEvent]如果为true的话则activity即使处于后台也能接收到，只要没有被销毁
      * 则可以一直接收推送信息
-     *
      * @param sysErrModel
      */
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(sysErrModel: SysErrModel) {
-        when (sysErrModel.code) {
-            else -> {
-                sysErrModel.sysInfo?.let {
-                    ui {
-                        toast(it)
-                    }
-                }
-            }
-        }
-
+        onEventListener(sysErrModel)
     }
+
+    /**
+     * 可以在此处处理弹出各种toast错误，当前为主线程
+     *  when (sysErrModel.code) {
+     *      else -> {
+     *          sysErrModel.sysInfo?.let {
+     *               toast(it)
+     *           }
+     *       }
+     *  }
+     */
+    abstract fun onEventListener(sysErrModel: SysErrModel)
 
     protected fun goActivity(cls: Class<*>?) {
         val intent = Intent(this, cls)
@@ -149,6 +153,16 @@ abstract class BaseActivity : AppCompatActivity() {
                 it.dismiss()
             }
         }
+    }
+
+    /**
+     * 清空所有activity并打开新activity
+     */
+    fun clearActivity(path: String) {
+        navigation(
+            url = path,
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        )
     }
 
     protected fun addFragment(containId: Int, fragment: Class<*>) {
