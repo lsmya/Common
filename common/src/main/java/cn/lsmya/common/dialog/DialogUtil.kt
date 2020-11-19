@@ -2,9 +2,14 @@ package cn.lsmya.common.dialog
 
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
 import android.util.SparseArray
 import android.view.Gravity
 import android.view.View
+import android.widget.Button
+import android.widget.TextView
+import androidx.annotation.*
+import androidx.core.content.ContextCompat
 import cn.lsmya.common.R
 import cn.lsmya.common.extension.getScreenWidth
 
@@ -21,6 +26,10 @@ object DialogUtil {
         private val themeId = R.style.common_dialog_bottom_dialog_custom
         private var animId = R.style.common_dialog_bottom_menu_animation
         private var mClickArray = SparseArray<OnViewClickListener>()
+        private var textString = HashMap<Int, String>()
+        private var textColor = HashMap<Int, Int>()
+        private var textColorRes = HashMap<Int, Int>()
+        private var textColorStr = HashMap<Int, Int>()
 
         /**
          * 设置显示的布局
@@ -37,6 +46,31 @@ object DialogUtil {
          */
         fun setContentView(contentLayoutId: Int): Builder {
             this.contentLayoutId = contentLayoutId
+            return this
+        }
+
+        fun setTextColorRes(@IdRes id: Int, @ColorRes color: Int): Builder {
+            textColorRes[id] = color
+            return this
+        }
+
+        fun setTextColor(@IdRes id: Int, @ColorInt color: Int): Builder {
+            textColor[id] = color
+            return this
+        }
+
+        fun setTextColor(@IdRes id: Int, @Size(min = 1) color: String): Builder {
+            textColorStr[id] = Color.parseColor(color)
+            return this
+        }
+
+        fun setText(@IdRes id: Int, @StringRes strId: Int): Builder {
+            textString[id] = context.getString(strId)
+            return this
+        }
+
+        fun setText(@IdRes id: Int, text: String?): Builder {
+            textString[id] = text ?: ""
             return this
         }
 
@@ -112,6 +146,19 @@ object DialogUtil {
             for (i in 0 until mClickArray.size()) {
                 dialog.findViewById<View>(mClickArray.keyAt(i))
                     .setOnClickListener { mClickArray.valueAt(i).onClick(dialog) }
+            }
+            for (entry in textString) {
+                dialog.findViewById<TextView>(entry.key).text = entry.value
+            }
+            for (entry in textColorRes) {
+                dialog.findViewById<TextView>(entry.key)
+                    .setTextColor(ContextCompat.getColor(context, entry.value))
+            }
+            for (entry in textColorStr) {
+                dialog.findViewById<TextView>(entry.key).setTextColor(entry.value)
+            }
+            for (entry in textColor) {
+                dialog.findViewById<TextView>(entry.key).setTextColor(entry.value)
             }
             return dialog
         }
