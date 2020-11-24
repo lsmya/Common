@@ -1,5 +1,6 @@
 package cn.lsmya.common.extension
 
+import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.widget.TextView
@@ -51,4 +52,7 @@ fun TextView.text() = this.text.toString()
 fun TextView.length() = this.text().length
 fun TextView.setColor(@ColorRes id: Int) {
     setTextColor(ContextCompat.getColor(context, id))
+}
+fun TextView.setColor(color: String) {
+    setTextColor(Color.parseColor(color))
 }
