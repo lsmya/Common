@@ -1,4 +1,4 @@
-package com.sd.common.base
+package cn.lsmya.common.base
 
 import android.app.Dialog
 import android.content.Intent
@@ -6,15 +6,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import cn.lsmya.common.R
 import cn.lsmya.common.empty.SysErrModel
 import cn.lsmya.common.extension.registerEventBus
 import cn.lsmya.common.extension.unregisterEventBus
 import cn.lsmya.common.extension.view
 import org.greenrobot.eventbus.Subscribe
-
 
 abstract class BaseFragment : CacheFragment() {
     private var mIsFirstVisible = true
@@ -37,7 +34,6 @@ abstract class BaseFragment : CacheFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         if (enableEventBus()) {
             registerEventBus()
         }
@@ -154,56 +150,6 @@ abstract class BaseFragment : CacheFragment() {
         startActivityForResult(intent, requestCode)
     }
 
-    protected fun addFragment(
-        containId: Int,
-        fragment: Class<*>,
-        needChildSupport: Boolean = false
-    ) {
-        val fragmentManager: FragmentManager? = if (needChildSupport) {
-            childFragmentManager
-        } else {
-            fragmentManager
-        }
-        fragmentManager?.let {
-            val tag = fragment.simpleName
-            try {
-                val fragment1 = it.findFragmentByTag(fragment.simpleName)
-                val transaction = it.beginTransaction()
-                if (null == fragment1) {
-                    val fragments = it.fragments
-                    if (fragments.isNotEmpty()) {
-                        for (fragmentIn in fragments) {
-                            if (fragmentIn.isVisible) {
-                                transaction.hide(fragmentIn)
-                                    .add(containId, fragment.newInstance() as Fragment, tag)
-                                    .commit()
-                                break
-                            }
-                        }
-                    } else {
-                        transaction.add(containId, fragment.newInstance() as Fragment, tag).commit()
-                    }
-                } else {
-                    if (fragment1.isHidden) {
-                        if (fragment1.isAdded) {
-                            for (fragmentIn in it.fragments) {
-                                if (fragmentIn.isVisible) {
-                                    transaction.hide(fragmentIn).show(fragment1).commit()
-                                    break
-                                }
-                            }
-                        } else {
-                            transaction.add(containId, fragment1, tag).commit()
-                        }
-                    } else {
-
-                    }
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    }
     fun loading() {
         if (loadingDialog == null) {
             val view = activity!!.view(R.layout.common_loading, null);

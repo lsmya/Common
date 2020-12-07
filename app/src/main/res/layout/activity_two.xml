@@ -4,8 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/rootView"
-    android:gravity="center"
-    tools:context=".MainActivity">
-
+    tools:context=".TwoActivity">
+<Button
+    android:layout_width="wrap_content"
+    android:text="返回"
+    android:layout_centerInParent="true"
+    android:onClick="back"
+    android:layout_height="wrap_content"/>
 </RelativeLayout>
