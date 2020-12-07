@@ -22,6 +22,7 @@ object DialogUtil {
         private var contentView: View? = null
         private var contentLayoutId = -1
         private var mGravity = Gravity.CENTER
+        private var mCanceledOnTouchOutside = true
         private var mWidth = 1f
         private val themeId = R.style.common_dialog_bottom_dialog_custom
         private var animId = R.style.common_dialog_bottom_menu_animation
@@ -46,6 +47,11 @@ object DialogUtil {
          */
         fun setContentView(contentLayoutId: Int): Builder {
             this.contentLayoutId = contentLayoutId
+            return this
+        }
+
+        fun setCanceledOnTouchOutside(cancel: Boolean): Builder {
+            this.mCanceledOnTouchOutside = cancel
             return this
         }
 
@@ -137,6 +143,7 @@ object DialogUtil {
             } else {
                 dialog.setContentView(contentLayoutId)
             }
+            dialog.setCanceledOnTouchOutside(mCanceledOnTouchOutside)
             val window = dialog.window
             window!!.setGravity(mGravity)
             window.setWindowAnimations(animId)
