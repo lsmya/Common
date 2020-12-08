@@ -150,7 +150,7 @@ abstract class BaseFragment : CacheFragment() {
         startActivityForResult(intent, requestCode)
     }
 
-    fun loading() {
+    fun showLoading() {
         if (loadingDialog == null) {
             val view = activity!!.view(R.layout.common_loading, null);
             loadingDialog = Dialog(activity!!, R.style.common_dialog_loading)
