@@ -31,6 +31,7 @@ object DialogUtil {
         private var textColor = HashMap<Int, Int>()
         private var textColorRes = HashMap<Int, Int>()
         private var textColorStr = HashMap<Int, Int>()
+        private var mOnCancelListener: (() -> Unit)? = null
 
         /**
          * 设置显示的布局
@@ -52,6 +53,11 @@ object DialogUtil {
 
         fun setCanceledOnTouchOutside(cancel: Boolean): Builder {
             this.mCanceledOnTouchOutside = cancel
+            return this
+        }
+
+        fun setOnCancelListener(onCancelListener: (() -> Unit)?): Builder {
+            this.mOnCancelListener = onCancelListener
             return this
         }
 
@@ -167,6 +173,7 @@ object DialogUtil {
             for (entry in textColor) {
                 dialog.findViewById<TextView>(entry.key).setTextColor(entry.value)
             }
+            dialog.setOnCancelListener { mOnCancelListener?.invoke() }
             return dialog
         }
 
