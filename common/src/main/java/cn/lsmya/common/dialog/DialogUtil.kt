@@ -174,6 +174,7 @@ object DialogUtil {
                 dialog.findViewById<TextView>(entry.key).setTextColor(entry.value)
             }
             dialog.setOnCancelListener { mOnCancelListener?.invoke() }
+            dialog.setOnDismissListener { mOnCancelListener?.invoke() }
             return dialog
         }
 
