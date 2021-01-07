@@ -8,6 +8,7 @@
         <attr name="toolbar_navigationIconColor" format="color" />
         <attr name="toolbar_hideNavigationIcon" format="boolean" />
         <attr name="toolbar_clickEffect" format="boolean" />
+        <attr name="toolbar_menuColor" format="color" />
     </declare-styleable>
 
     <declare-styleable name="LoadingView">

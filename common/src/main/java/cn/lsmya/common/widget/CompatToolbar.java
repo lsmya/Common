@@ -5,6 +5,9 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +31,7 @@ public class CompatToolbar extends RelativeLayout {
     private OnClickListener listener;
     private OnMenuClickListener menuClickListener;
     private int navigationIconColor = -1;
+    private int menuColor = Color.BLACK;
 
     public CompatToolbar(Context context) {
         this(context, null);
@@ -81,6 +85,8 @@ public class CompatToolbar extends RelativeLayout {
                     navigationIconView.setVisibility(VISIBLE);
                     toolbar.setNavigationIcon(null);
                 }
+            } else if (attr == R.styleable.CompatToolbar_toolbar_menuColor) {
+                menuColor = typedArray.getColor(attr, Color.parseColor("#000000"));
             }
         }
         typedArray.recycle();
@@ -105,6 +111,12 @@ public class CompatToolbar extends RelativeLayout {
             }
             return true;
         });
+        for (int i1 = 0; i1 < toolbar.getMenu().size(); i1++) {
+            MenuItem item = toolbar.getMenu().getItem(i1);
+            SpannableStringBuilder style = new SpannableStringBuilder(item.getTitle());
+            style.setSpan(new ForegroundColorSpan(menuColor), 0, item.getTitle().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            item.setTitle(style);
+        }
     }
 
     public void setOnNavigationClickListener(OnClickListener listener) {
