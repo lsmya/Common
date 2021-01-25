@@ -6,14 +6,15 @@ import android.graphics.Color
 import android.util.SparseArray
 import android.view.Gravity
 import android.view.View
-import android.widget.Button
 import android.widget.TextView
 import androidx.annotation.*
 import androidx.core.content.ContextCompat
 import cn.lsmya.common.R
 import cn.lsmya.common.extension.getScreenWidth
+import cn.lsmya.common.extension.singleClick
 
-object DialogUtil {
+object SuperDialog {
+
     fun newBuilder(context: Context): Builder {
         return Builder(context)
     }
@@ -26,11 +27,13 @@ object DialogUtil {
         private var mWidth = 1f
         private val themeId = R.style.common_dialog_bottom_dialog_custom
         private var animId = R.style.common_dialog_bottom_menu_animation
-        private var mClickArray = SparseArray<OnViewClickListener>()
+
+        private var mClickArray = SparseArray<(dialog: Dialog) -> Unit>()
         private var textString = HashMap<Int, String>()
         private var textColor = HashMap<Int, Int>()
         private var textColorRes = HashMap<Int, Int>()
         private var textColorStr = HashMap<Int, Int>()
+        private var mOnDismissListener: (() -> Unit)? = null
         private var mOnCancelListener: (() -> Unit)? = null
 
         /**
@@ -56,11 +59,34 @@ object DialogUtil {
             return this
         }
 
+        /**
+         * 设置dialog关闭\取消（dismiss\cancel）监听
+         */
+        fun setOnDismissCancelListener(onDismissCancelListener: (() -> Unit)?): Builder {
+            this.mOnDismissListener = onDismissCancelListener
+            this.mOnCancelListener = onDismissCancelListener
+            return this
+        }
+
+        /**
+         * 设置dialog关闭（dismiss）监听
+         */
+        fun setOnDismissListener(onDismissListener: (() -> Unit)?): Builder {
+            this.mOnDismissListener = onDismissListener
+            return this
+        }
+
+        /**
+         * 设置dialog取消（cancel）监听
+         */
         fun setOnCancelListener(onCancelListener: (() -> Unit)?): Builder {
             this.mOnCancelListener = onCancelListener
             return this
         }
 
+        /**
+         * 设置文字颜色
+         */
         fun setTextColorRes(@IdRes id: Int, @ColorRes color: Int): Builder {
             textColorRes[id] = color
             return this
@@ -76,6 +102,9 @@ object DialogUtil {
             return this
         }
 
+        /**
+         * 设置布局内View的文字
+         */
         fun setText(@IdRes id: Int, @StringRes strId: Int): Builder {
             textString[id] = context.getString(strId)
             return this
@@ -117,7 +146,7 @@ object DialogUtil {
          * @param viewId 点击的view
          * @param listener 点击事件监听回调
          */
-        fun setClick(viewId: Int, listener: OnViewClickListener): Builder {
+        fun setClick(viewId: Int, listener: ((dialog: Dialog) -> Unit)): Builder {
             mClickArray.put(viewId, listener)
             return this
         }
@@ -142,40 +171,40 @@ object DialogUtil {
         /**
          * 创建dialog，最后需要调用 show 方法
          */
-        fun build(): Dialog {
-            val dialog = Dialog(context, themeId)
-            if (contentLayoutId == -1) {
-                dialog.setContentView(contentView!!)
+        fun build(): Dialog = Dialog(context, themeId).apply {
+            if (contentView != null) {
+                setContentView(contentView!!)
             } else {
-                dialog.setContentView(contentLayoutId)
+                setContentView(contentLayoutId)
             }
-            dialog.setCanceledOnTouchOutside(mCanceledOnTouchOutside)
-            val window = dialog.window
+            setCanceledOnTouchOutside(mCanceledOnTouchOutside)
+            val window = window
             window!!.setGravity(mGravity)
             window.setWindowAnimations(animId)
             val lp = window.attributes
             lp.width = (context.getScreenWidth() * mWidth).toInt()
             window.attributes = lp
             for (i in 0 until mClickArray.size()) {
-                dialog.findViewById<View>(mClickArray.keyAt(i))
-                    .setOnClickListener { mClickArray.valueAt(i).onClick(dialog) }
+                findViewById<View>(mClickArray.keyAt(i))
+                    .singleClick {
+                        mClickArray.valueAt(i).invoke(this)
+                    }
             }
             for (entry in textString) {
-                dialog.findViewById<TextView>(entry.key).text = entry.value
+                findViewById<TextView>(entry.key).text = entry.value
             }
             for (entry in textColorRes) {
-                dialog.findViewById<TextView>(entry.key)
+                findViewById<TextView>(entry.key)
                     .setTextColor(ContextCompat.getColor(context, entry.value))
             }
             for (entry in textColorStr) {
-                dialog.findViewById<TextView>(entry.key).setTextColor(entry.value)
+                findViewById<TextView>(entry.key).setTextColor(entry.value)
             }
             for (entry in textColor) {
-                dialog.findViewById<TextView>(entry.key).setTextColor(entry.value)
+                findViewById<TextView>(entry.key).setTextColor(entry.value)
             }
-            dialog.setOnCancelListener { mOnCancelListener?.invoke() }
-            dialog.setOnDismissListener { mOnCancelListener?.invoke() }
-            return dialog
+            setOnCancelListener { mOnCancelListener?.invoke() }
+            setOnDismissListener { mOnDismissListener?.invoke() }
         }
 
         /**
@@ -189,12 +218,4 @@ object DialogUtil {
 
     }
 
-    interface OnViewClickListener {
-        /**
-         * Called when a view has been clicked.
-         *
-         * @param dialog Dialog
-         */
-        fun onClick(dialog: Dialog)
-    }
 }
