@@ -33,7 +33,7 @@ public class CompatToolbar extends RelativeLayout {
     private int navigationIconColor = -1;
     private int menuColor = Color.BLACK;
     private boolean titleCentre = true;
-    private String title="";
+    private String title = "";
 
     public CompatToolbar(Context context) {
         this(context, null);
@@ -77,7 +77,9 @@ public class CompatToolbar extends RelativeLayout {
                     toolbar.inflateMenu(resourceId);
                 }
             } else if (attr == R.styleable.CompatToolbar_toolbar_titleColor) {
-                titleView.setTextColor(typedArray.getColor(attr, Color.parseColor("#111111")));
+                int color = typedArray.getColor(attr, Color.parseColor("#111111"));
+                titleView.setTextColor(color);
+                toolbar.setTitleTextColor(color);
             } else if (attr == R.styleable.CompatToolbar_toolbar_hideNavigationIcon) {
                 boolean hide = typedArray.getBoolean(attr, false);
                 if (hide) {
