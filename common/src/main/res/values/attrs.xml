@@ -2,6 +2,7 @@
 <resources>
     <declare-styleable name="CompatToolbar" >
         <attr name="toolbar_title" format="string" />
+        <attr name="toolbar_titleCentre" format="boolean" />
         <attr name="toolbar_navigationIcon" format="reference|color" />
         <attr name="toolbar_menu" format="reference" />
         <attr name="toolbar_titleColor" format="color" />

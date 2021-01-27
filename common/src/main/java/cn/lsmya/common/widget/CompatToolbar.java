@@ -32,6 +32,8 @@ public class CompatToolbar extends RelativeLayout {
     private OnMenuClickListener menuClickListener;
     private int navigationIconColor = -1;
     private int menuColor = Color.BLACK;
+    private boolean titleCentre = true;
+    private String title="";
 
     public CompatToolbar(Context context) {
         this(context, null);
@@ -59,7 +61,9 @@ public class CompatToolbar extends RelativeLayout {
         for (int i = 0; i < typedArray.getIndexCount(); i++) {
             int attr = typedArray.getIndex(i);
             if (attr == R.styleable.CompatToolbar_toolbar_title) {
-                titleView.setText(typedArray.getString(attr));
+                title = typedArray.getString(attr);
+            } else if (attr == R.styleable.CompatToolbar_toolbar_titleCentre) {
+                titleCentre = typedArray.getBoolean(attr, true);
             } else if (attr == R.styleable.CompatToolbar_toolbar_navigationIcon) {
                 int resourceId = typedArray.getResourceId(attr, 0);
                 if (0 != resourceId) {
@@ -90,6 +94,7 @@ public class CompatToolbar extends RelativeLayout {
             }
         }
         typedArray.recycle();
+        setTitle(title);
         Drawable navigationIcon = toolbar.getNavigationIcon();
         if (navigationIconColor != -1 && navigationIcon != null) {
             navigationIcon.setColorFilter(navigationIconColor, PorterDuff.Mode.SRC_ATOP);
@@ -153,8 +158,13 @@ public class CompatToolbar extends RelativeLayout {
     }
 
     public void setTitle(CharSequence title) {
-        if (titleView != null) {
-            titleView.setText(title);
+        this.title = title.toString();
+        if (titleCentre) {
+            if (titleView != null) {
+                titleView.setText(title);
+            }
+        } else {
+            toolbar.setTitle(title);
         }
     }
 
