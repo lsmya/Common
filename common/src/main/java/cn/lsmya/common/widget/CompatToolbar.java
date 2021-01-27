@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import androidx.annotation.StringRes;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 
 import cn.lsmya.common.R;
 
@@ -30,7 +29,7 @@ public class CompatToolbar extends RelativeLayout {
     private ImageView navigationIconView;
     private OnClickListener listener;
     private OnMenuClickListener menuClickListener;
-    private int navigationIconColor = -1;
+    private int navigationIconColor = -2;
     private int menuColor = Color.BLACK;
     private boolean titleCentre = true;
     private String title = "";
@@ -98,7 +97,7 @@ public class CompatToolbar extends RelativeLayout {
         typedArray.recycle();
         setTitle(title);
         Drawable navigationIcon = toolbar.getNavigationIcon();
-        if (navigationIconColor != -1 && navigationIcon != null) {
+        if (navigationIconColor != -2 && navigationIcon != null) {
             navigationIcon.setColorFilter(navigationIconColor, PorterDuff.Mode.SRC_ATOP);
             toolbar.setNavigationIcon(navigationIcon);
         }
