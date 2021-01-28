@@ -169,4 +169,26 @@ public class CompatToolbar extends RelativeLayout {
         }
     }
 
+    public void setMenuText(int itemId,CharSequence title) {
+        for (int i1 = 0; i1 < toolbar.getMenu().size(); i1++) {
+            MenuItem item = toolbar.getMenu().getItem(i1);
+            if (item.getItemId() == itemId) {
+                item.setTitle(title);
+                SpannableStringBuilder style = new SpannableStringBuilder(item.getTitle());
+                style.setSpan(new ForegroundColorSpan(menuColor), 0, item.getTitle().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                item.setTitle(style);
+            }
+        }
+    }
+    public void setMenuText(int itemId,int title) {
+        for (int i1 = 0; i1 < toolbar.getMenu().size(); i1++) {
+            MenuItem item = toolbar.getMenu().getItem(i1);
+            if (item.getItemId() == itemId) {
+                item.setTitle(title);
+                SpannableStringBuilder style = new SpannableStringBuilder(item.getTitle());
+                style.setSpan(new ForegroundColorSpan(menuColor), 0, item.getTitle().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                item.setTitle(style);
+            }
+        }
+    }
 }
