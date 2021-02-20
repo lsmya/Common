@@ -16,8 +16,8 @@ fun navigation(
 ) {
     val postcard = ARouter.getInstance().build(url)
     postcard?.let {
-        block?.let {
-            postcard.apply(it)
+        block?.let { it1 ->
+            postcard.apply(it1)
         }
         if (flags != -1) {
             it.withFlags(flags)

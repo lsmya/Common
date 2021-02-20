@@ -125,16 +125,29 @@ public class CompatToolbar extends RelativeLayout {
         }
     }
 
+    /**
+     * 设置toolbar左侧按钮点击监听事件
+     *
+     * @param listener 监听毁回调
+     */
     public void setOnNavigationClickListener(OnClickListener listener) {
         this.listener = listener;
     }
 
+    /**
+     * 设置toolbar左侧按钮Icon
+     *
+     * @param resId Icon资源文件
+     */
     public void setNavigationIcon(int resId) {
         if (this.toolbar != null) {
             this.toolbar.setNavigationIcon(resId);
         }
     }
 
+    /**
+     * 隐藏toolbar左侧按钮
+     */
     public void hideNavigationIcon() {
         if (this.toolbar != null) {
             this.toolbar.setNavigationIcon(null);
@@ -154,10 +167,20 @@ public class CompatToolbar extends RelativeLayout {
         void onMenuClick(MenuItem menuItem);
     }
 
+    /**
+     * 设置标题
+     *
+     * @param resId 标题内容
+     */
     public void setTitle(@StringRes int resId) {
         this.setTitle(getContext().getText(resId));
     }
 
+    /**
+     * 设置标题
+     *
+     * @param title 标题内容
+     */
     public void setTitle(CharSequence title) {
         this.title = title.toString();
         if (titleCentre) {
@@ -169,7 +192,13 @@ public class CompatToolbar extends RelativeLayout {
         }
     }
 
-    public void setMenuText(int itemId,CharSequence title) {
+    /**
+     * 修改菜单按钮文本文案
+     *
+     * @param itemId 菜单按钮的id
+     * @param title  要修改的内容
+     */
+    public void setMenuText(int itemId, CharSequence title) {
         for (int i1 = 0; i1 < toolbar.getMenu().size(); i1++) {
             MenuItem item = toolbar.getMenu().getItem(i1);
             if (item.getItemId() == itemId) {
@@ -180,7 +209,14 @@ public class CompatToolbar extends RelativeLayout {
             }
         }
     }
-    public void setMenuText(int itemId,int title) {
+
+    /**
+     * 修改菜单按钮文本文案
+     *
+     * @param itemId 菜单按钮的id
+     * @param title  要修改的内容
+     */
+    public void setMenuText(int itemId, int title) {
         for (int i1 = 0; i1 < toolbar.getMenu().size(); i1++) {
             MenuItem item = toolbar.getMenu().getItem(i1);
             if (item.getItemId() == itemId) {
