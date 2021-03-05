@@ -260,4 +260,23 @@ public class CompatToolbar extends RelativeLayout {
             }
         }
     }
+
+    /**
+     * 隐藏菜单
+     */
+    public void hideMenu(MenuItem menuItem, boolean visible) {
+        menuItem.setVisible(visible);
+    }
+
+    public void hideMenu(MenuItem menuItem) {
+        hideMenu(menuItem, false);
+    }
+
+    public void hideMenu(int menuId, boolean visible) {
+        toolbar.getMenu().findItem(menuId).setVisible(visible);
+    }
+
+    public void hideMenu(int menuId) {
+        hideMenu(menuId, false);
+    }
 }
