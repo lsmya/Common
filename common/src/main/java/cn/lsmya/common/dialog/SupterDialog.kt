@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.util.SparseArray
 import android.view.Gravity
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.*
 import androidx.core.content.ContextCompat
@@ -33,6 +34,7 @@ object SuperDialog {
         private var textColor = HashMap<Int, Int>()
         private var textColorRes = HashMap<Int, Int>()
         private var textColorStr = HashMap<Int, Int>()
+        private var imageRes = HashMap<Int, Int>()
         private var mOnDismissListener: (() -> Unit)? = null
         private var mOnCancelListener: (() -> Unit)? = null
 
@@ -112,6 +114,14 @@ object SuperDialog {
 
         fun setText(@IdRes id: Int, text: String?): Builder {
             textString[id] = text ?: ""
+            return this
+        }
+
+        /**
+         * 设置布局内ImageView的image
+         */
+        fun setImageResource(@IdRes id: Int, @DrawableRes resId: Int): Builder {
+            imageRes[id] = resId
             return this
         }
 
@@ -202,6 +212,9 @@ object SuperDialog {
             }
             for (entry in textColor) {
                 findViewById<TextView>(entry.key).setTextColor(entry.value)
+            }
+            for (entry in imageRes) {
+                findViewById<ImageView>(entry.key).setImageResource(entry.value)
             }
             setOnCancelListener { mOnCancelListener?.invoke() }
             setOnDismissListener { mOnDismissListener?.invoke() }
