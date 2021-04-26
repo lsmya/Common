@@ -9,6 +9,7 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -138,10 +139,12 @@ public class CompatToolbar extends RelativeLayout {
         toolbar.setNavigationOnClickListener(v -> {
             if (listener != null) {
                 listener.onClick(v);
+                Log.e("=====", "init:11111 ========");
             }
         });
         navigationIconView.setOnClickListener(v -> {
             if (listener != null) {
+                Log.e("=====", "init: ========");
                 listener.onClick(v);
             }
         });
@@ -215,7 +218,7 @@ public class CompatToolbar extends RelativeLayout {
     public void hideNavigationIcon() {
         if (this.toolbar != null) {
             this.toolbar.setNavigationIcon(null);
-            this.navigationIconView.setVisibility(GONE);
+            this.navigationIconView.setVisibility(INVISIBLE);
         }
     }
 
