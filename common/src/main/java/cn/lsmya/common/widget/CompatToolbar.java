@@ -218,7 +218,7 @@ public class CompatToolbar extends RelativeLayout {
     public void hideNavigationIcon() {
         if (this.toolbar != null) {
             this.toolbar.setNavigationIcon(null);
-            this.navigationIconView.setVisibility(INVISIBLE);
+            this.navigationIconView.setVisibility(GONE);
         }
     }
 
