@@ -3,7 +3,7 @@
     <declare-styleable name="CompatToolbar" >
         <attr name="toolbar_title" format="string" />
         <attr name="toolbar_titleCentre" format="boolean" />
-        <attr name="toolbar_navigationIcon" format="reference|color" />
+        <attr name="toolbar_navigationIcon" format="reference" />
         <attr name="toolbar_menu" format="reference" />
         <attr name="toolbar_titleColor" format="color" />
         <attr name="toolbar_navigationIconColor" format="color" />
@@ -11,6 +11,7 @@
         <attr name="toolbar_clickEffect" format="boolean" />
         <attr name="toolbar_menuColor" format="color" />
         <attr name="toolbar_navigationText" format="string" />
+        <attr name="toolbar_navigationSecondIcon" format="reference" />
     </declare-styleable>
 
     <declare-styleable name="LoadingView">

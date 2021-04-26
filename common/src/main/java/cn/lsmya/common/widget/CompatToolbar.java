@@ -26,13 +26,16 @@ import cn.lsmya.common.R;
 public class CompatToolbar extends RelativeLayout {
     private Toolbar toolbar;
     private TextView backTextView;
+    private ImageView backImageView;
     private TextView titleView;
     private ImageView navigationIconView;
     private OnClickListener listener;
     private OnClickListener listenerText;
+    private OnClickListener listenerImage;
     private OnMenuClickListener menuClickListener;
     private int navigationIconColor = -2;
     private int menuColor = Color.BLACK;
+    private boolean hideNavigationIcon = false;
     private boolean titleCentre = true;
     private boolean clickEffect = true;
     private String title = "";
@@ -54,6 +57,7 @@ public class CompatToolbar extends RelativeLayout {
         View view = inflate(getContext(), R.layout.common_toolbar, this);
         toolbar = view.findViewById(R.id.ui_toolbar_toolbar);
         backTextView = view.findViewById(R.id.ui_toolbar_backText);
+        backImageView = view.findViewById(R.id.ui_toolbar_backSecond);
         titleView = view.findViewById(R.id.ui_toolbar_title);
         navigationIconView = view.findViewById(R.id.ui_toolbar_back);
         toolbar.setNavigationIcon(R.drawable.common_arrow_back);
@@ -84,10 +88,7 @@ public class CompatToolbar extends RelativeLayout {
                 titleView.setTextColor(color);
                 toolbar.setTitleTextColor(color);
             } else if (attr == R.styleable.CompatToolbar_toolbar_hideNavigationIcon) {
-                boolean hide = typedArray.getBoolean(attr, false);
-                if (hide) {
-                    hideNavigationIcon();
-                }
+                hideNavigationIcon = typedArray.getBoolean(attr, false);
             } else if (attr == R.styleable.CompatToolbar_toolbar_clickEffect) {
                 clickEffect = typedArray.getBoolean(attr, false);
                 if (!clickEffect) {
@@ -99,11 +100,20 @@ public class CompatToolbar extends RelativeLayout {
             } else if (attr == R.styleable.CompatToolbar_toolbar_navigationText) {
                 String value = typedArray.getString(attr);
                 backTextView.setText(value);
+            } else if (attr == R.styleable.CompatToolbar_toolbar_navigationSecondIcon) {
+                int resourceId = typedArray.getResourceId(attr, 0);
+                if (resourceId != 0) {
+                    backImageView.setImageResource(resourceId);
+                    backImageView.setVisibility(VISIBLE);
+                }
             }
         }
         typedArray.recycle();
         setTitle(title);
         Drawable navigationIcon = toolbar.getNavigationIcon();
+        if (navigationIcon == null) {
+            navigationIcon = navigationIconView.getDrawable();
+        }
         if (navigationIconColor != -2 && navigationIcon != null) {
             navigationIcon.setColorFilter(navigationIconColor, PorterDuff.Mode.SRC_ATOP);
             toolbar.setNavigationIcon(navigationIcon);
@@ -120,6 +130,11 @@ public class CompatToolbar extends RelativeLayout {
                 toolbar.setNavigationIcon(null);
             }
         }
+        Drawable backImageViewDrawable = backImageView.getDrawable();
+        if (navigationIconColor != -2 && backImageViewDrawable != null) {
+            backImageViewDrawable.setColorFilter(navigationIconColor, PorterDuff.Mode.SRC_ATOP);
+            backImageView.setImageDrawable(backImageViewDrawable);
+        }
         toolbar.setNavigationOnClickListener(v -> {
             if (listener != null) {
                 listener.onClick(v);
@@ -135,6 +150,11 @@ public class CompatToolbar extends RelativeLayout {
                 listenerText.onClick(v);
             }
         });
+        backImageView.setOnClickListener(v -> {
+            if (listenerImage != null) {
+                listenerImage.onClick(v);
+            }
+        });
         toolbar.setOnMenuItemClickListener(menuItem -> {
             if (menuClickListener != null) {
                 menuClickListener.onMenuClick(menuItem);
@@ -147,12 +167,15 @@ public class CompatToolbar extends RelativeLayout {
             style.setSpan(new ForegroundColorSpan(menuColor), 0, item.getTitle().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             item.setTitle(style);
         }
+        if (hideNavigationIcon) {
+            hideNavigationIcon();
+        }
     }
 
     /**
      * 设置toolbar左侧按钮点击监听事件
      *
-     * @param listener 监听毁回调
+     * @param listener 监听回调
      */
     public void setOnNavigationClickListener(OnClickListener listener) {
         this.listener = listener;
@@ -161,10 +184,18 @@ public class CompatToolbar extends RelativeLayout {
     /**
      * 设置toolbar左侧文字按钮点击监听事件
      *
-     * @param listener 监听毁回调
+     * @param listener 监听回调
      */
     public void setOnNavigationTextClickListener(OnClickListener listener) {
         this.listenerText = listener;
+    }
+    /**
+     * 设置toolbar左侧第二图片按钮点击监听事件
+     *
+     * @param listener 监听毁回调
+     */
+    public void setOnNavigationImageClickListener(OnClickListener listener) {
+        this.listenerImage = listener;
     }
 
     /**

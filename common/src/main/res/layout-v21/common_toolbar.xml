@@ -30,7 +30,7 @@
         <ImageView
             android:id="@+id/ui_toolbar_back"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:scaleType="center"
             android:src="@drawable/common_arrow_back"
             android:visibility="gone"
@@ -42,14 +42,27 @@
         <TextView
             android:id="@+id/ui_toolbar_backText"
             android:layout_width="wrap_content"
-            android:textSize="16sp"
             android:layout_height="0dp"
+            android:gravity="center"
+            app:layout_goneMarginStart="18dp"
+            android:paddingEnd="20dp"
             android:textColor="#111111"
-            app:layout_goneMarginStart="15dp"
-            android:gravity="center_vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:textSize="16sp"
             android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/ui_toolbar_back"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ui_toolbar_backSecond"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:paddingEnd="15dp"
+            android:gravity="center_vertical"
+            android:scaleType="center"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ui_toolbar_backText"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </cn.lsmya.common.widget.CompatBarView>

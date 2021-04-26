@@ -44,13 +44,26 @@
             android:id="@+id/ui_toolbar_backText"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:gravity="center_vertical"
+            android:gravity="center"
+            android:paddingEnd="20dp"
+            android:textColor="#111111"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_goneMarginStart="15dp"
-            android:background="#111111"
             android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/ui_toolbar_back"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_goneMarginStart="18dp" />
+
+        <ImageView
+            android:id="@+id/ui_toolbar_backSecond"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:paddingEnd="15dp"
+            android:scaleType="center"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ui_toolbar_backText"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </cn.lsmya.common.widget.CompatBarView>
