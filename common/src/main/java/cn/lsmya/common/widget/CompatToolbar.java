@@ -9,7 +9,6 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -139,12 +138,10 @@ public class CompatToolbar extends RelativeLayout {
         toolbar.setNavigationOnClickListener(v -> {
             if (listener != null) {
                 listener.onClick(v);
-                Log.e("=====", "init:11111 ========");
             }
         });
         navigationIconView.setOnClickListener(v -> {
             if (listener != null) {
-                Log.e("=====", "init: ========");
                 listener.onClick(v);
             }
         });
@@ -169,6 +166,11 @@ public class CompatToolbar extends RelativeLayout {
             SpannableStringBuilder style = new SpannableStringBuilder(item.getTitle());
             style.setSpan(new ForegroundColorSpan(menuColor), 0, item.getTitle().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             item.setTitle(style);
+            Drawable iconDrawable = item.getIcon();
+            if (iconDrawable != null) {
+                iconDrawable.setColorFilter(menuColor, PorterDuff.Mode.SRC_ATOP);
+                item.setIcon(iconDrawable);
+            }
         }
         if (hideNavigationIcon) {
             hideNavigationIcon();
@@ -192,6 +194,7 @@ public class CompatToolbar extends RelativeLayout {
     public void setOnNavigationTextClickListener(OnClickListener listener) {
         this.listenerText = listener;
     }
+
     /**
      * 设置toolbar左侧第二图片按钮点击监听事件
      *
