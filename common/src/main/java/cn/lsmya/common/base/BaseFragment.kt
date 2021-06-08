@@ -8,10 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import cn.lsmya.common.R
 import cn.lsmya.common.empty.SysErrModel
+import cn.lsmya.common.empty.SysHideLoadingModel
+import cn.lsmya.common.extension.postEvent
 import cn.lsmya.common.extension.registerEventBus
 import cn.lsmya.common.extension.unregisterEventBus
 import cn.lsmya.common.extension.view
 import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 abstract class BaseFragment : CacheFragment() {
     private var mIsFirstVisible = true
@@ -80,7 +83,12 @@ abstract class BaseFragment : CacheFragment() {
     fun onEvent(sysErrModel: SysErrModel) {
 
     }
-
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(sysErrModel: SysHideLoadingModel) {
+        if (loadingDialog != null && loadingDialog!!.isShowing) {
+            loadingDialog!!.dismiss()
+        }
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         mIsFirstVisible = true
@@ -158,6 +166,7 @@ abstract class BaseFragment : CacheFragment() {
         }
         if (loadingDialog!!.isShowing) {
             loadingDialog!!.dismiss()
+            SysHideLoadingModel().postEvent()
         } else {
             loadingDialog!!.show()
         }
@@ -170,6 +179,7 @@ abstract class BaseFragment : CacheFragment() {
         if (loadingDialog != null && loadingDialog!!.isShowing) {
             loadingDialog!!.dismiss()
         }
+        SysHideLoadingModel().postEvent()
     }
 
 }

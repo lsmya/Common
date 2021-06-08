@@ -14,7 +14,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import cn.lsmya.common.R
 import cn.lsmya.common.empty.SysErrModel
-import cn.lsmya.common.extension.*
+import cn.lsmya.common.empty.SysHideLoadingModel
+import cn.lsmya.common.extension.postEvent
+import cn.lsmya.common.extension.registerEventBus
+import cn.lsmya.common.extension.unregisterEventBus
+import cn.lsmya.common.extension.view
 import cn.lsmya.common.utils.navigation
 import com.alibaba.android.arouter.launcher.ARouter
 import com.gyf.immersionbar.ktx.immersionBar
@@ -82,6 +86,13 @@ abstract class SimpleActivity : AppCompatActivity() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(sysErrModel: SysErrModel) {
         onEventListener(sysErrModel)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(sysErrModel: SysHideLoadingModel) {
+        if (loadingDialog != null && loadingDialog!!.isShowing) {
+            loadingDialog!!.dismiss()
+        }
     }
 
     /**
@@ -214,6 +225,7 @@ abstract class SimpleActivity : AppCompatActivity() {
         }
         if (loadingDialog!!.isShowing) {
             loadingDialog!!.dismiss()
+            SysHideLoadingModel().postEvent()
         } else {
             loadingDialog!!.show()
         }
@@ -226,6 +238,7 @@ abstract class SimpleActivity : AppCompatActivity() {
         if (loadingDialog != null && loadingDialog!!.isShowing) {
             loadingDialog!!.dismiss()
         }
+        SysHideLoadingModel().postEvent()
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
