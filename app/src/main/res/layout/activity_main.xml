@@ -7,11 +7,4 @@
     android:layout_height="match_parent"
     android:gravity="center"
     tools:context=".MainActivity">
-
-    <cn.lsmya.common.widget.CompatToolbar
-        android:layout_width="match_parent"
-        app:toolbar_menuColor="#ff0000"
-        android:background="@color/colorPrimary"
-        android:layout_height="wrap_content"
-        app:toolbar_menu="@menu/map_delete" />
 </RelativeLayout>
