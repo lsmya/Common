@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import cn.lsmya.common.R
-import cn.lsmya.common.empty.SysErrModel
+import cn.lsmya.common.empty.SystemMessage
 import cn.lsmya.common.empty.SysHideLoadingModel
 import cn.lsmya.common.extension.postEvent
 import cn.lsmya.common.extension.registerEventBus
@@ -80,7 +80,7 @@ abstract class BaseFragment : CacheFragment() {
     }
 
     @Subscribe
-    fun onEvent(sysErrModel: SysErrModel) {
+    fun onEvent(systemMessage: SystemMessage) {
 
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -160,8 +160,8 @@ abstract class BaseFragment : CacheFragment() {
 
     fun showLoading() {
         if (loadingDialog == null) {
-            val view = activity!!.view(R.layout.common_loading, null);
-            loadingDialog = Dialog(activity!!, R.style.common_dialog_loading)
+            val view = requireActivity().view(R.layout.common_loading, null);
+            loadingDialog = Dialog(requireActivity(), R.style.common_dialog_loading)
             loadingDialog!!.setContentView(view)
         }
         if (loadingDialog!!.isShowing) {

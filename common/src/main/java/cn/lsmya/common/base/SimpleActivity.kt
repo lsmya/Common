@@ -13,7 +13,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import cn.lsmya.common.R
-import cn.lsmya.common.empty.SysErrModel
+import cn.lsmya.common.empty.SystemMessage
 import cn.lsmya.common.empty.SysHideLoadingModel
 import cn.lsmya.common.extension.postEvent
 import cn.lsmya.common.extension.registerEventBus
@@ -81,11 +81,11 @@ abstract class SimpleActivity : AppCompatActivity() {
      *
      * [isGlobleIntercepterEventbusEvent]如果为true的话则activity即使处于后台也能接收到，只要没有被销毁
      * 则可以一直接收推送信息
-     * @param sysErrModel
+     * @param systemMessage
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(sysErrModel: SysErrModel) {
-        onEventListener(sysErrModel)
+    fun onEvent(systemMessage: SystemMessage) {
+        onEventListener(systemMessage)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -97,15 +97,15 @@ abstract class SimpleActivity : AppCompatActivity() {
 
     /**
      * 可以在此处处理弹出各种toast错误，当前为主线程
-     *  when (sysErrModel.code) {
+     *  when (systemMessage.code) {
      *      else -> {
-     *          sysErrModel.sysInfo?.let {
+     *          systemMessage.sysInfo?.let {
      *               toast(it)
      *           }
      *       }
      *  }
      */
-    abstract fun onEventListener(sysErrModel: SysErrModel)
+    abstract fun onEventListener(systemMessage: SystemMessage)
 
     protected fun goActivity(cls: Class<*>?) {
         val intent = Intent(this, cls)

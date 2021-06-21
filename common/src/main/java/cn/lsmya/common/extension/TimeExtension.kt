@@ -150,7 +150,7 @@ fun Long.todayHhMmSs(): String {
  * 将日期转换为时间戳
  */
 
-fun timeToTimestamp(time: String, sdf: SimpleDateFormat): Long = sdf.parse(time).time
+fun timeToTimestamp(time: String, sdf: SimpleDateFormat): Long = sdf.parse(time)!!.time
 
 /**
  * 计算两个日期直接的时间差
